@@ -612,10 +612,10 @@ func (c *Client) hijack(method, path string, hijackOptions hijackOptions) error 
 		<-hijackOptions.success
 	}
 	rwc, br := clientconn.Hijack()
-	defer rwc.Close()
 	errChanOut := make(chan error, 1)
 	errChanIn := make(chan error, 1)
 	go func() {
+		defer rwc.Close()
 		defer func() {
 			if hijackOptions.in != nil {
 				if closer, ok := hijackOptions.in.(io.Closer); ok {
